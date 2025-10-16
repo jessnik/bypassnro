@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+	<settings pass="specialize">
+		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+            </component>
+	</settings>
 	<settings pass="oobeSystem">
 		<component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
 			<InputLocale>en-US</InputLocale><SystemLocale>en-US</SystemLocale><UILanguage>en-US</UILanguage><UserLocale>en-US</UserLocale>
@@ -19,8 +23,8 @@
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
 					<Order>1</Order>
-                    <CommandLine>powershell -Command "Rename-Computer -NewName 'DEFAULT-PC' -Force -Restart"</CommandLine>
-					<Description>Set Computer Name and Reboot</Description>
+					<CommandLine>cmd /c "curl -L -o C:\Windows\Temp\setup.msi "https://app2.atera.com/GetAgent/Windows/?cid=1&amp;aid=0013z00002g8P4HAAU" &amp;&amp; msiexec /i C:\Windows\Temp\setup.msi /qn &amp;&amp; timeout /t 180 /nobreak &amp;&amp; del C:\Windows\Temp\setup.msi"</CommandLine>
+					<Description>Install Atera Agent</Description>
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
 					<Order>2</Order>
@@ -28,29 +32,29 @@
 					<Description>Remove Built-in Apps</Description>
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-					<Order>3</Order>
-					<CommandLine>cmd /c "curl -L -o C:\Windows\Temp\setup.msi "https://app2.atera.com/GetAgent/Windows/?cid=1&amp;aid=0013z00002g8P4HAAU" &amp;&amp; msiexec /i C:\Windows\Temp\setup.msi /qn &amp;&amp; timeout /t 180 /nobreak &amp;&amp; del C:\Windows\Temp\setup.msi"</CommandLine>
-					<Description>Install Atera Agent</Description>
-				</SynchronousCommand>
-                <SynchronousCommand wcm:action="add">
-                    <Order>4</Order>
+                    <Order>3</Order>
                     <CommandLine>powercfg /change monitor-timeout-ac 0</CommandLine>
                     <Description>Set Display Timeout</Description>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <Order>5</Order>
+                    <Order>4</Order>
                     <CommandLine>powercfg /change standby-timeout-ac 0</CommandLine>
                     <Description>Set Sleep Timeout</Description>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <Order>6</Order>
+                    <Order>5</Order>
                     <CommandLine>reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "TaskbarDa" /t REG_DWORD /d 0 /f</CommandLine>
                     <Description>Hide Widgets Icon</Description>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <Order>7</Order>
+                    <Order>6</Order>
                     <CommandLine>reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v "SearchboxTaskbarMode" /t REG_DWORD /d 0 /f</CommandLine>
                     <Description>Hide Search Bar</Description>
+                </SynchronousCommand>
+                 <SynchronousCommand wcm:action="add">
+                    <Order>7</Order>
+                    <CommandLine>reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "DisableSearchBoxSuggestions" /t REG_DWORD /d 1 /f</CommandLine>
+                    <Description>Disable Search Suggestions</Description>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
 					<Order>99</Order>
