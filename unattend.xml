@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
-	<settings pass="specialize">
-		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-            </component>
-	</settings>
 	<settings pass="oobeSystem">
 		<component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
 			<InputLocale>en-US</InputLocale><SystemLocale>en-US</SystemLocale><UILanguage>en-US</UILanguage><UserLocale>en-US</UserLocale>
@@ -15,7 +11,7 @@
 				</LocalAccounts>
 			</UserAccounts>
 			<AutoLogon>
-				<Username>ctadmin</Username><Enabled>true</Enabled><LogonCount>1</LogonCount><Password><Value></Value><PlainText>true</PlainText></Password>
+				<Username>ctadmin</Username><Enabled>true</Enabled><LogonCount>2</LogonCount><Password><Value></Value><PlainText>true</PlainText></Password>
 			</AutoLogon>
 			<OOBE>
 				<HideEULAPage>true</HideEULAPage><HideOnlineAccountScreens>true</HideOnlineAccountScreens><ProtectYourPC>1</ProtectYourPC>
@@ -23,42 +19,38 @@
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
 					<Order>1</Order>
+                    <CommandLine>powershell -Command "Rename-Computer -NewName (Get-Content C:\Temp\hostname.txt) -Force -Restart"</CommandLine>
+					<Description>Set Computer Name and Reboot</Description>
+				</SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+					<Order>2</Order>
 					<CommandLine>cmd /c "curl -L -o C:\Windows\Temp\setup.msi "https://app2.atera.com/GetAgent/Windows/?cid=1&amp;aid=0013z00002g8P4HAAU" &amp;&amp; msiexec /i C:\Windows\Temp\setup.msi /qn &amp;&amp; timeout /t 180 /nobreak &amp;&amp; del C:\Windows\Temp\setup.msi"</CommandLine>
 					<Description>Install Atera Agent</Description>
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-					<Order>2</Order>
+					<Order>3</Order>
 					<CommandLine>powershell -Command "Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -in ('Microsoft.Microsoft3DViewer','Microsoft.BingSearch','Clipchamp.Clipchamp','Microsoft.Windows.DevHome','MicrosoftCorporationII.MicrosoftFamily','Microsoft.WindowsFeedbackHub','Microsoft.Edge.GameAssist','Microsoft.GetHelp','Microsoft.Getstarted','microsoft.windowscommunicationsapps','Microsoft.WindowsMaps','Microsoft.MixedReality.Portal','Microsoft.BingNews','Microsoft.Office.OneNote','Microsoft.OutlookForWindows','Microsoft.MSPaint','Microsoft.People','Microsoft.PowerAutomateDesktop','MicrosoftCorporationII.QuickAssist','Microsoft.SkypeApp','Microsoft.MicrosoftSolitaireCollection','MicrosoftTeams','MSTeams','Microsoft.Todos','Microsoft.WindowsSoundRecorder','Microsoft.Wallet','Microsoft.BingWeather','Microsoft.Xbox.TCUI','Microsoft.XboxApp','Microsoft.XboxGameOverlay','Microsoft.XboxGamingOverlay','Microsoft.XboxIdentityProvider','Microsoft.XboxSpeechToTextOverlay','Microsoft.GamingApp','Microsoft.ZuneMusic','Microsoft.ZuneVideo','Microsoft.LinkedIn') } | Remove-AppxProvisionedPackage -Online"</CommandLine>
 					<Description>Remove Built-in Apps</Description>
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
-                    <Order>3</Order>
-                    <CommandLine>powercfg /change monitor-timeout-ac 0</CommandLine>
-                    <Description>Set Display Timeout</Description>
-                </SynchronousCommand>
-                <SynchronousCommand wcm:action="add">
                     <Order>4</Order>
-                    <CommandLine>powercfg /change standby-timeout-ac 0</CommandLine>
-                    <Description>Set Sleep Timeout</Description>
+                    <CommandLine>powercfg /change monitor-timeout-ac 0</CommandLine>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <Order>5</Order>
-                    <CommandLine>reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "TaskbarDa" /t REG_DWORD /d 0 /f</CommandLine>
-                    <Description>Hide Widgets Icon</Description>
+                    <CommandLine>powercfg /change standby-timeout-ac 0</CommandLine>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
                     <Order>6</Order>
-                    <CommandLine>reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v "SearchboxTaskbarMode" /t REG_DWORD /d 0 /f</CommandLine>
-                    <Description>Hide Search Bar</Description>
+                    <CommandLine>reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "TaskbarDa" /t REG_DWORD /d 0 /f</CommandLine>
                 </SynchronousCommand>
-                 <SynchronousCommand wcm:action="add">
+                <SynchronousCommand wcm:action="add">
                     <Order>7</Order>
-                    <CommandLine>reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "DisableSearchBoxSuggestions" /t REG_DWORD /d 1 /f</CommandLine>
-                    <Description>Disable Search Suggestions</Description>
+                    <CommandLine>reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Search" /v "SearchboxTaskbarMode" /t REG_DWORD /d 0 /f</CommandLine>
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
 					<Order>99</Order>
-					<CommandLine>cmd /c "net user ctadmin /logonpasswordchg:yes &amp;&amp; rmdir C:\Windows.old /s /q &amp;&amp; shutdown /r /t 5"</CommandLine>
+					<CommandLine>cmd /c "net user ctadmin /logonpasswordchg:yes &amp;&amp; rmdir C:\Windows.old /s /q &amp;&amp; del C:\Temp\hostname.txt &amp;&amp; shutdown /r /t 5"</CommandLine>
 					<Description>Final Cleanup and Reboot for Password</Description>
 				</SynchronousCommand>
 			</FirstLogonCommands>
