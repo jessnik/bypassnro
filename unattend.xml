@@ -19,7 +19,7 @@
             <FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
 					<Order>1</Order>
-                    <CommandLine>powershell -Command "Rename-Computer -NewName (Get-Content C:\Temp\hostname.txt) -Force -Restart"</CommandLine>
+                    <CommandLine>powershell -Command "if (Test-Path C:\Temp\hostname.txt) { Rename-Computer -NewName (Get-Content C:\Temp\hostname.txt) -Force -Restart } else { Write-Host 'hostname.txt not found, skipping rename.' }"</CommandLine>
 					<Description>Set Computer Name and Reboot</Description>
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
