@@ -24,6 +24,12 @@
 		</component>
 	</settings>
 	<settings pass="oobeSystem">
+		<component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<InputLocale>en-US</InputLocale>
+			<SystemLocale>en-US</SystemLocale>
+			<UILanguage>en-US</UILanguage>
+			<UserLocale>en-US</UserLocale>
+		</component>
 		<component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
 			<UserAccounts>
 				<LocalAccounts>
@@ -34,7 +40,14 @@
 				<Username>ctadmin</Username><Enabled>true</Enabled><LogonCount>1</LogonCount><Password><Value></Value><PlainText>true</PlainText></Password>
 			</AutoLogon>
 			<OOBE>
-				<HideEULAPage>true</HideEULAPage><HideOEMRegistrationScreen>true</HideOEMRegistrationScreen><HideOnlineAccountScreens>true</HideOnlineAccountScreens><HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE><ProtectYourPC>1</ProtectYourPC>
+				<HideEULAPage>true</HideEULAPage>
+				<HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
+				<HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+				<HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+				<ProtectYourPC>1</ProtectYourPC>
+				<HidePrivacySettings>true</HidePrivacySettings>
+				<HideLocalAccountScreen>true</HideLocalAccountScreen>
+				<HideDeviceUsage>true</HideDeviceUsage>
 			</OOBE>
 			<FirstLogonCommands>
 				<SynchronousCommand wcm:action="add"><Order>1</Order><CommandLine>powershell.exe -WindowStyle Normal -NoProfile -Command "Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\FirstLogon.ps1' -Raw | Invoke-Expression;"</CommandLine></SynchronousCommand>
@@ -62,10 +75,14 @@ $scripts = @(
 	{ reg.exe add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Communications" /v ConfigureChatAutoInstall /t REG_DWORD /d 0 /f; },
 	{ Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\RemovePackages.ps1' -Raw | Invoke-Expression; },
 	{ net.exe accounts /maxpwage:UNLIMITED; },
+    # --- NEW POWER SETTINGS ---
+    # Set Display and Sleep to NEVER only when plugged in (AC Power).
+	{ powercfg /change monitor-timeout-ac 0 },
+	{ powercfg /change standby-timeout-ac 0 },
 	{ reg.exe add "HKLM\SOFTWARE\Policies\Microsoft\Dsh" /v AllowNewsAndInterests /t REG_DWORD /d 0 /f; },
 	{ Get-Content -LiteralPath 'C:\Windows\Setup\Scripts\SetStartPins.ps1' -Raw | Invoke-Expression; }
 );
-&amp; { [float] $complete = 0; [float] $increment = 100 / $scripts.Count; foreach( $script in $scripts ) { Write-Progress -Activity 'Running scripts to customize your Windows installation. Do not close this window.' -PercentComplete $complete; '*** Will now execute command &#xAB;{0}&#xBB;.' -f $( $str = $script.ToString().Trim() -replace '\s+', ' '; $max = 100; if( $str.Length -le $max ) { $str; } else { $str.Substring( 0, $max -- 1 ) + '&#x2026;'; } ); $start = [datetime]::Now; &amp; $script; '*** Finished executing command after {0:0} ms.' -f [datetime]::Now.Subtract( $start ).TotalMilliseconds; "`r`n" * 3; $complete += $increment; } } *&gt;&amp;1 &gt;&gt; "C:\Windows\Setup\Scripts\Specialize.log";
+&amp; { [float] $complete = 0; [float] $increment = 100 / $scripts.Count; foreach( $script in $scripts ) { Write-Progress -Activity 'Running scripts to customize your Windows installation. Do not close this window.' -PercentComplete $complete; '*** Will now execute command &#xAB;{0}&#xBB;.' -f $( $str = $script.ToString().Trim() -replace '\s+', ' '; $max = 100; if( $str.Length -le $max ) { $str; } else { $str.Substring( 0, $max - 1 ) + '&#x2026;'; } ); $start = [datetime]::Now; &amp; $script; '*** Finished executing command after {0:0} ms.' -f [datetime]::Now.Subtract( $start ).TotalMilliseconds; "`r`n" * 3; $complete += $increment; } } *&gt;&amp;1 &gt;&gt; "C:\Windows\Setup\Scripts\Specialize.log";
 		</File>
 		<File path="C:\Windows\Setup\Scripts\UserOnce.ps1">
 $scripts = @(
