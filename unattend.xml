@@ -16,7 +16,7 @@
 			<OOBE>
 				<HideEULAPage>true</HideEULAPage><HideOnlineAccountScreens>true</HideOnlineAccountScreens><ProtectYourPC>1</ProtectYourPC>
 			</OOBE>
-            <FirstLogonCommands>
+			<FirstLogonCommands>
                 <SynchronousCommand wcm:action="add">
 					<Order>1</Order>
                     <CommandLine>powershell -Command "if (Test-Path C:\Temp\hostname.txt) { Rename-Computer -NewName (Get-Content C:\Temp\hostname.txt) -Force -Restart } else { Write-Host 'hostname.txt not found, skipping rename.' }"</CommandLine>
@@ -24,12 +24,12 @@
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
 					<Order>2</Order>
-					<CommandLine>cmd /c "curl -L -o C:\Windows\Temp\setup.msi "https://app2.atera.com/GetAgent/Windows/?cid=1&amp;aid=0013z00002g8P4HAAU" &amp;&amp; msiexec /i C:\Windows\Temp\setup.msi /qn &amp;&amp; timeout /t 180 /nobreak &amp;&amp; del C:\Windows\Temp\setup.msi"</CommandLine>
+                    <CommandLine>cmd /c "curl -L -o C:\Windows\Temp\setup.msi "https://app2.atera.com/GetAgent/Windows/?cid=1&amp;aid=0013z00002g8P4HAAU" &amp;&amp; msiexec /i C:\Windows\Temp\setup.msi /qn &amp;&amp; timeout /t 180 /nobreak &amp;&amp; del C:\Windows\Temp\setup.msi"</CommandLine>
 					<Description>Install Atera Agent</Description>
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
 					<Order>3</Order>
-					<CommandLine>powershell -Command "Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -in ('Microsoft.Microsoft3DViewer','Microsoft.BingSearch','Clipchamp.Clipchamp','Microsoft.Windows.DevHome','MicrosoftCorporationII.MicrosoftFamily','Microsoft.WindowsFeedbackHub','Microsoft.Edge.GameAssist','Microsoft.GetHelp','Microsoft.Getstarted','microsoft.windowscommunicationsapps','Microsoft.WindowsMaps','Microsoft.MixedReality.Portal','Microsoft.BingNews','Microsoft.Office.OneNote','Microsoft.OutlookForWindows','Microsoft.MSPaint','Microsoft.People','Microsoft.PowerAutomateDesktop','MicrosoftCorporationII.QuickAssist','Microsoft.SkypeApp','Microsoft.MicrosoftSolitaireCollection','MicrosoftTeams','MSTeams','Microsoft.Todos','Microsoft.WindowsSoundRecorder','Microsoft.Wallet','Microsoft.BingWeather','Microsoft.Xbox.TCUI','Microsoft.XboxApp','Microsoft.XboxGameOverlay','Microsoft.XboxGamingOverlay','Microsoft.XboxIdentityProvider','Microsoft.XboxSpeechToTextOverlay','Microsoft.GamingApp','Microsoft.ZuneMusic','Microsoft.ZuneVideo','Microsoft.LinkedIn') } | Remove-AppxProvisionedPackage -Online"</CommandLine>
+                    <CommandLine>powershell -Command "Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -in ('Microsoft.Microsoft3DViewer','Microsoft.BingSearch','Clipchamp.Clipchamp','Microsoft.Windows.DevHome','MicrosoftCorporationII.MicrosoftFamily','Microsoft.WindowsFeedbackHub','Microsoft.Edge.GameAssist','Microsoft.GetHelp','Microsoft.Getstarted','microsoft.windowscommunicationsapps','Microsoft.WindowsMaps','Microsoft.MixedReality.Portal','Microsoft.BingNews','Microsoft.Office.OneNote','Microsoft.OutlookForWindows','Microsoft.MSPaint','Microsoft.People','Microsoft.PowerAutomateDesktop','MicrosoftCorporationII.QuickAssist','Microsoft.SkypeApp','Microsoft.MicrosoftSolitaireCollection','MicrosoftTeams','MSTeams','Microsoft.Todos','Microsoft.WindowsSoundRecorder','Microsoft.Wallet','Microsoft.BingWeather','Microsoft.Xbox.TCUI','Microsoft.XboxApp','Microsoft.XboxGameOverlay','Microsoft.XboxGamingOverlay','Microsoft.XboxIdentityProvider','Microsoft.XboxSpeechToTextOverlay','Microsoft.GamingApp','Microsoft.ZuneMusic','Microsoft.ZuneVideo','Microsoft.LinkedIn') } &#124; Remove-AppxProvisionedPackage -Online"</CommandLine>
 					<Description>Remove Built-in Apps</Description>
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
@@ -50,7 +50,7 @@
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
 					<Order>99</Order>
-					<CommandLine>cmd /c "net user ctadmin /logonpasswordchg:yes &amp;&amp; rmdir C:\Windows.old /s /q &amp;&amp; del C:\Temp\hostname.txt &amp;&amp; shutdown /r /t 5"</CommandLine>
+                    <CommandLine>cmd /c "net user ctadmin /logonpasswordchg:yes &amp;&amp; rmdir C:\Windows.old /s /q &amp;&amp; del C:\Temp\hostname.txt &amp;&amp; shutdown /r /t 5"</CommandLine>
 					<Description>Final Cleanup and Reboot for Password</Description>
 				</SynchronousCommand>
 			</FirstLogonCommands>
