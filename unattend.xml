@@ -29,7 +29,7 @@
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
 					<Order>3</Order>
-                    <CommandLine>powershell -Command "Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -in ('Microsoft.Microsoft3DViewer','Microsoft.BingSearch','Clipchamp.Clipchamp','Microsoft.Windows.DevHome','MicrosoftCorporationII.MicrosoftFamily','Microsoft.WindowsFeedbackHub','Microsoft.Edge.GameAssist','Microsoft.GetHelp','Microsoft.Getstarted','microsoft.windowscommunicationsapps','Microsoft.WindowsMaps','Microsoft.MixedReality.Portal','Microsoft.BingNews','Microsoft.Office.OneNote','Microsoft.OutlookForWindows','Microsoft.MSPaint','Microsoft.People','Microsoft.PowerAutomateDesktop','MicrosoftCorporationII.QuickAssist','Microsoft.SkypeApp','Microsoft.MicrosoftSolitaireCollection','MicrosoftTeams','MSTeams','Microsoft.Todos','Microsoft.WindowsSoundRecorder','Microsoft.Wallet','Microsoft.BingWeather','Microsoft.Xbox.TCUI','Microsoft.XboxApp','Microsoft.XboxGameOverlay','Microsoft.XboxGamingOverlay','Microsoft.XboxIdentityProvider','Microsoft.XboxSpeechToTextOverlay','Microsoft.GamingApp','Microsoft.ZuneMusic','Microsoft.ZuneVideo','Microsoft.LinkedIn') } &#124; Remove-AppxProvisionedPackage -Online"</CommandLine>
+					<CommandLine>powershell -Command "Get-AppxProvisionedPackage -Online | Where-Object { $_.DisplayName -in ('Microsoft.Microsoft3DViewer','Microsoft.BingSearch','Clipchamp.Clipchamp','Microsoft.Windows.DevHome','MicrosoftCorporationII.MicrosoftFamily','Microsoft.WindowsFeedbackHub','Microsoft.Edge.GameAssist','Microsoft.GetHelp','Microsoft.Getstarted','microsoft.windowscommunicationsapps','Microsoft.WindowsMaps','Microsoft.MixedReality.Portal','Microsoft.BingNews','Microsoft.Office.OneNote','Microsoft.OutlookForWindows','Microsoft.MSPaint','Microsoft.People','Microsoft.PowerAutomateDesktop','MicrosoftCorporationII.QuickAssist','Microsoft.SkypeApp','Microsoft.MicrosoftSolitaireCollection','MicrosoftTeams','MSTeams','Microsoft.Todos','Microsoft.WindowsSoundRecorder','Microsoft.Wallet','Microsoft.BingWeather','Microsoft.Xbox.TCUI','Microsoft.XboxApp','Microsoft.XboxGameOverlay','Microsoft.XboxGamingOverlay','Microsoft.XboxIdentityProvider','Microsoft.XboxSpeechToTextOverlay','Microsoft.GamingApp','Microsoft.ZuneMusic','Microsoft.ZuneVideo','Microsoft.LinkedIn') } | Remove-AppxProvisionedPackage -Online"</CommandLine>
 					<Description>Remove Built-in Apps</Description>
 				</SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
@@ -50,7 +50,7 @@
                 </SynchronousCommand>
                 <SynchronousCommand wcm:action="add">
 					<Order>99</Order>
-                    <CommandLine>cmd /c "net user ctadmin /logonpasswordchg:yes &amp;&amp; rmdir C:\Windows.old /s /q &amp;&amp; del C:\Temp\hostname.txt &amp;&amp; shutdown /r /t 5"</CommandLine>
+					<CommandLine>cmd /c "net user ctadmin /logonpasswordchg:yes &amp;&amp; rmdir C:\Windows.old /s /q &amp;&amp; del C:\Temp\hostname.txt &amp;&amp; shutdown /r /t 5"</CommandLine>
 					<Description>Final Cleanup and Reboot for Password</Description>
 				</SynchronousCommand>
 			</FirstLogonCommands>
